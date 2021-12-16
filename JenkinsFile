@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                bat "mvn -Dmaven.test.failure.ignore-true clean package"
+            }
+        }
+        stage('Test Analyse') {
+            steps {
+                echo "Analytic-Test Stage"
+                bat "mvn test"
+                bat "mvn checkstyle:checkstyle"
+                bat "mvn spotbugs:spotbugs"
+                bat "mvn pmd:pmd"
+            }
+            
+        }stage('Test Unitaire') {
+            steps {
+                echo "Unit-Test Stage"
+            }
+            
+        }
+        stage('Package') {
+            steps {
+                echo "Package Stage"
+            }
+        }
+        stage('Publish on Nexus') {
+            steps {
+                echo "Publish Stage"
+            }
+        }      
+    }
+    post {
+        success {
+            junit '**/target/surefire-reports/TEST-*.xml'
+            
+			recordIssues enabledForFailure: true, tools: [mavenConsole(), java(), javaDoc()]
+            recordIssues enabledForFailure: true, tool: checkStyle()
+            recordIssues enabledForFailure: true, tool: spotBugs()
+            recordIssues enabledForFailure: true, tool: cpd(pattern: '**/target/cpd.xml')
+            recordIssues enabledForFailure: true, tool: pmdParser(pattern: '**/target/pmd.xml')
+                }
+        }
+}

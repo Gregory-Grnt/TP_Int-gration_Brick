@@ -5,5 +5,5 @@ Groupe: DEBOLO Aurélien, GRENOT Grégory, RAKZA Faycal, VICART Antoine
 
 ## To Do 
 
-- Create Job
+- Create Job  
 - Create Pipeline
