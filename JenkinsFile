@@ -27,7 +27,7 @@ pipeline {
 	stage('SonarQube Quality') {
             steps {
                 echo "SonarQube"
-                mvn clean verify sonar:sonar -Dsonar.projectKey=Tp-Integration-Continue-Brick-Game -Dsonar.host.url=http://localhost:9000 -Dsonar.login=${token_sonar}
+                bat "mvn clean verify sonar:sonar -Dsonar.projectKey=Tp-Integration-Continue-Brick-Game -Dsonar.host.url=http://localhost:9000 -Dsonar.login=${token_sonar}"
 		}
 
         }
