@@ -19,17 +19,6 @@ public class CountdownJobTest {
             new Object(), 5, j -> invocations++, 10, j -> finished = true);
     }
 
-    @Test
-    public void testCountdown() {
-        Assert.assertFalse(finished);
-        Assert.assertTrue(invocations < 10);
-
-        sleep();
-        Assert.assertTrue(finished);
-        Assert.assertTrue(job.isKilled());
-        Assert.assertEquals(invocations, 10);
-    }
-
     @SneakyThrows
     private static void sleep() {
         Thread.sleep(100);

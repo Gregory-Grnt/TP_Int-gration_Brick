@@ -12,22 +12,21 @@ pipeline {
                 echo "Test Stage"
                 bat "mvn test"
                 bat "mvn checkstyle:checkstyle"
-                bat "mvn spotbugs:spotbugs"
                 bat "mvn pmd:pmd"
             }
-            
+
         }
 	stage('Test Unit') {
             steps {
                 echo "Unit Test"
                 bat "mvn test"
             }
-            
+
         }
         stage('Package') {
             steps {
                 echo "Package Stage"
-                bat 'mvn package' 
+                bat 'mvn package'
             }
         }
         stage('Publish') {
@@ -36,15 +35,14 @@ pipeline {
                 archiveArtifacts '/target/*.jar'
 
             }
-        }      
+        }
     }
     post {
         success {
             junit '**/target/surefire-reports/TEST-*.xml'
-            
+
 			recordIssues enabledForFailure: true, tools: [mavenConsole(), java(), javaDoc()]
             recordIssues enabledForFailure: true, tool: checkStyle()
-            recordIssues enabledForFailure: true, tool: spotBugs()
             recordIssues enabledForFailure: true, tool: cpd(pattern: '**/target/cpd.xml')
             recordIssues enabledForFailure: true, tool: pmdParser(pattern: '**/target/pmd.xml')
                 }
