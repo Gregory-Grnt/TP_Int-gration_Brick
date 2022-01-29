@@ -16,7 +16,7 @@ pipeline {
                 bat "mvn pmd:pmd"
             }
             
-        }stage('Test Unitaire') {
+        stage('Test Unitaire') {
             steps {
                 echo "Unit-Test Stage"
 		bat "mvn test"
