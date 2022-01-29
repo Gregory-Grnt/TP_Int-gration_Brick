@@ -9,28 +9,32 @@ pipeline {
         }
         stage('Test Analyse') {
             steps {
-                echo "Analytic-Test Stage"
+                echo "Test Stage"
                 bat "mvn test"
                 bat "mvn checkstyle:checkstyle"
                 bat "mvn spotbugs:spotbugs"
                 bat "mvn pmd:pmd"
             }
             
-        stage('Test Unitaire') {
+        }
+	stage('Test Unit') {
             steps {
-                echo "Unit-Test Stage"
-		bat "mvn test"
+                echo "Unit Test"
+                bat "mvn test"
             }
             
         }
         stage('Package') {
             steps {
                 echo "Package Stage"
+                bat 'mvn package' 
             }
         }
-        stage('Publish on Nexus') {
+        stage('Publish') {
             steps {
                 echo "Publish Stage"
+                archiveArtifacts '/target/*.jar'
+
             }
         }      
     }
@@ -45,5 +49,4 @@ pipeline {
             recordIssues enabledForFailure: true, tool: pmdParser(pattern: '**/target/pmd.xml')
                 }
         }
- }
 }
